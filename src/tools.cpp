@@ -45,6 +45,9 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
     * Calculate a Jacobian here.
   */
     MatrixXd Hj(3,4);
+  Hj << 0, 0, 0, 0,
+  0, 0, 0, 0,
+  0, 0, 0, 0;
   std::cout<<"good till here" <<x_state<< std::endl;
 
     //recover state parameters
