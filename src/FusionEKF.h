@@ -30,7 +30,7 @@ public:
   * Kalman Filter update and prediction math lives in here.
   */
   KalmanFilter ekf_;
-
+  
 private:
   // check whether the tracking toolbox was initiallized or not (first measurement)
   bool is_initialized_;
@@ -44,6 +44,9 @@ private:
   Eigen::MatrixXd R_radar_;
   Eigen::MatrixXd H_laser_;
   Eigen::MatrixXd Hj_;
+  float noise_ax;
+  float noise_ay;
+
 };
 
 #endif /* FusionEKF_H_ */
