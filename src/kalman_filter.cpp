@@ -61,25 +61,26 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   VectorXd z_pred = VectorXd(3); // h(x')
   
   float x_y_2 = x_[0]*x_[0] + x_[1]*x_[1];
-  z_pred(1) = sqrt(x_y_2);
-  z_pred(2) = atan2(x_[1], x_[0]);
+  z_pred(0) = sqrt(x_y_2);
+  z_pred(1) = atan2(x_[1], x_[0]);
   
   // make phi between -pi and pi.
   float pi = M_PI;
-  while(z_pred(2) > pi && z_pred(2) < -pi){
+  while(z_pred(1) > pi && z_pred(1) < -pi){
     
-    if(z_pred(2) > pi){
-      z_pred(2) = z_pred(2) - 2*pi;
+    if(z_pred(1) > pi){
+      z_pred(1) = z_pred(1) - 2*pi;
     }else if(z_pred(2) < -pi){
-      z_pred(2) = z_pred(2) + 2*pi;
+      z_pred(1) = z_pred(1) + 2*pi;
     }
 
     
   }
-    if(z_pred(1) < 0.00001){
-    z_pred(3) = 0.0;
+  
+  if(z_pred(0) < 0.00001){
+    z_pred(2) = 0.0;
   }else{
-    z_pred(3) = (x_[2]*x_[0] + x_[3]*x_[1]) / sqrt(x_y_2);
+    z_pred(2) = (x_[2]*x_[0] + x_[3]*x_[1]) / sqrt(x_y_2);
   }
   
   VectorXd y = z - z_pred;
@@ -89,7 +90,6 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   MatrixXd PHt = P_ * Ht;
   MatrixXd K = PHt * Si;
   
-  std::cout<<"good till here" << std::endl;
 
   //new estimate
   x_ = x_ + K * y;
