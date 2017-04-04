@@ -57,8 +57,8 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
     //calculate Jacobian
     float x_y_2 = px*px + py*py;
-    float x_y_0_5 = sqrt(x_y_2)
-    float x_y_1_5 = x_y_2 * x_y_0_5
+    float x_y_0_5 = sqrt(x_y_2);
+  float x_y_1_5 = x_y_2 * x_y_0_5;
   
   std::cout << "x_y_2" << x_y_2 << std::endl;
   
