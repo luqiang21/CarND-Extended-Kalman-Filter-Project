@@ -57,21 +57,22 @@ MatrixXd Tools::CalculateJacobian(const VectorXd& x_state) {
 
     //calculate Jacobian
     float x_y_2 = px*px + py*py;
-  
+    float x_y_0_5 = sqrt(x_y_2)
+    float x_y_1_5 = x_y_2 * x_y_0_5
   
   std::cout << "x_y_2" << x_y_2 << std::endl;
   
   
   // check validaity
-    if(x_y_2 < 0.00001){
+    if(x_y_2 < 0.00000001){
       std::cout << "CalculateJacobian() Error: Divided by zero" << std::endl;
         return Hj;
     }
-
-    Hj << px / sqrt(x_y_2), py / sqrt(x_y_2), 0, 0,
+  
+    Hj << px / x_y_0_5, py / x_y_0_5, 0, 0,
           -py / x_y_2, px / x_y_2, 0, 0,
-    py * (vx*py - vy*px) / pow(x_y_2, 3/2), px * (vy*px - vx*py) / pow(x_y_2, 3/2),
-    px / sqrt(x_y_2), py/sqrt(x_y_2);
+    py * (vx*py - vy*px) / x_y_1_5, px * (vy*px - vx*py) / x_y_1_5,
+    px / x_y_0_5, py/x_y_0_5;
   
   std::cout << Hj<<std::endl;
     return Hj;
