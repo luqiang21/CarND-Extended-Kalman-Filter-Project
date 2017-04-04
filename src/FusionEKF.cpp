@@ -127,9 +127,11 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
                0, dt_4/4*noise_ay, 0, dt_3/2*noise_ay,
                dt_3/2*noise_ax, 0, dt_2*noise_ax, 0,
                0, dt_3/2*noise_ay, 0, dt_2*noise_ay;
-    
-  ekf_.Predict();
-
+  
+  // if the time difference is too small, not update.
+  if(dt > 0.001){
+    ekf_.Predict();
+  }
   /*****************************************************************************
    *  Update
    ****************************************************************************/
@@ -144,7 +146,10 @@ void FusionEKF::ProcessMeasurement(const MeasurementPackage &measurement_pack) {
   R_radar_ << 0.09, 0, 0,
   0, 0.0009, 0,
   0, 0, 0.09;
-
+  
+  // initialization of H_laser_
+  H_laser_ << 1, 0, 0, 0,
+  0, 1, 0, 0;
   /**
    TODO:
      * Use the sensor type to perform the update step.
