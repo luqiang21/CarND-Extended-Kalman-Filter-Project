@@ -61,8 +61,14 @@ void KalmanFilter::UpdateEKF(const VectorXd &z) {
   VectorXd z_pred = VectorXd(3); // h(x')
   
   float x_y_2 = x_[0]*x_[0] + x_[1]*x_[1];
-  z_pred(0) = sqrt(x_y_2);
-  z_pred(1) = atan2(x_[1], x_[0]);
+  // avoid the situation that atan2(0, 0) (error)
+  if(x_y_2 < 0.00000001){
+    z_pred << 0.0, 0.0, 0.0;
+  }else{
+    z_pred(0) = sqrt(x_y_2);
+    z_pred(1) = atan2(x_[1], x_[0]); // what if x_[1] == 0 && x_[0] == 0?
+
+  }
   
   // make phi between -pi and pi.
   float pi = M_PI;
